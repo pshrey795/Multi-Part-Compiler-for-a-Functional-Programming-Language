@@ -1,3 +1,5 @@
+(*This file has been prepared by Shrey J. Patel 2019CS10400 *)
+
 (* Exceptions, note that their type is self-explanatory from their name *)
 exception emptyInputFile		
 exception UnevenFields of string
@@ -22,10 +24,10 @@ let
 			(* This function converts unescaped delimiters, terminates when encountered with an unescaped newline
 			character and ignores escaped delimeters and newline characters. It raises exceptions on incorrect
 			usage of double quotes *)
-			fun convert(s,instream,n,control) = 
-				(*Parameters: s:already processes string, instream: Input stream, n:current number of fields
-				control: this is an integer representing the various states of string processing, which decides
-				how to process the current character*)
+			fun convert(instream,n,control) = 
+				(*Parameters: instream: Input stream, n:current number of fields, control: this is an integer 
+				representing the various states of string processing, which decides how to process the current 
+				character*)
 				
 				(* Processing the next character using TextIO.input *)
 				case TextIO.input1 instream of
@@ -51,52 +53,54 @@ let
 						     one of the above two cases.
 						     
 					Note that the if-then-else blocks below process/convert the characters differently
-					depending on the current value of control.	     						     
+					depending on the current value of control.	     	   
 					*)
 					if(control = 0) then 
 						(* Detects the end of line(unescaped) *)
-						if(str(c) = "\n") then (s^"\""^"\n",n)
+						if(str(c) = "\n") then (TextIO.output(outstream,"\""^"\n");n)
 						(* Switching delimiters, and increasing the count of fields processed *)
-						else if(str(c) = str(delim1)) then convert(s^"\""^str(delim2),instream,n+1,2) 
+						else if(str(c) = str(delim1)) 
+						then (TextIO.output(outstream,"\""^str(delim2));convert(instream,n+1,2)) 
 						(* Single(unescaped) double quote raises an exception *)
 						else if(str(c) = "\"") then raise doubleQuoteError
 						(* Normal character, other than newlines or delimiters *)
-						else convert(s^str(c),instream,n,0)
+						else (TextIO.output(outstream,str(c));convert(instream,n,0))
 					else if(control = 1) then
 						(* Detects either the end of field double quote or an escaped double quote *)
-						if(str(c) = "\"") then convert(s^"\"",instream,n,3)
+						if(str(c) = "\"") then (TextIO.output(outstream,"\"");convert(instream,n,3))
 						(* Rest of the characters are processed without any change, including newlines
 						and delimiters as they have been escaped *)
-						else convert(s^str(c),instream,n,1)
+						else (TextIO.output(outstream,str(c));convert(instream,n,1))
 					else if(control = 2) then
 						(* Starting of the next field with a double quote*)
-						if(str(c) = "\"") then convert(s^"\"",instream,n,1)
+						if(str(c) = "\"") then (TextIO.output(outstream,"\"");convert(instream,n,1))
 						(* Detects a delimeter followed by a delimeter i.e. without any field, this is 
 						to be interpreted as an empty field *)
 						else if(str(c) = str(delim1)) then
-						convert(s^"\""^"\""^str(delim2),instream,n+1,2)
+						(TextIO.output(outstream,"\""^"\""^str(delim2));convert(instream,n+1,2))
 						(* Detects a delimeter followed by a new line i.e. without any field, this is
 						to be interpreted as an empty field *)     
-						else if(str(c) = "\n") then (s^"\"\"\n",n)
+						else if(str(c) = "\n") then (TextIO.output(outstream,"\"\"\n");n)
 						(* Starting of the next field without a double quote*)
-						else convert(s^"\""^str(c),instream,n,0)
+						else (TextIO.output(outstream,"\""^str(c));convert(instream,n,0))
 					else
 						(* Detects an escaped double quote *)
-						if(str(c) = "\"") then convert(s^str(c),instream,n,1)
+						if(str(c) = "\"") then (TextIO.output(outstream,"\"");convert(instream,n,1))
 						(* Detects a double quote signifying an end of the field, and  *)
-						else if(str(c) = str(delim1)) then convert(s^str(delim2),instream,n+1,2)
+						else if(str(c) = str(delim1)) then 
+						(TextIO.output(outstream,str(delim2));convert(instream,n+1,2))
 						(* Detects the end of line *)
-						else if(str(c) = "\n") then (s^"\n",n)
+						else if(str(c) = "\n") then (TextIO.output(outstream,"\n");n)
 						(* If a single(unescaped) double quote is followed by any character other than
 						the ones listed above, then an exception is raised *)
 						else raise doubleQuoteError
-					| NONE => (s,n) (* Stops processing input at the end of file *)
+					| NONE => raise invalidNewlineUsage (* Stops processing input at the end of file *)
 		in
 		
 			(* Processing the first character of the current line i.e. data record *)
-			if(str(character) = "\n") then ("\"\"\n",0)
-			else if(str(character) = "\"") then convert("\"",instream,1,1)
-			else convert("\""^str(character),instream,1,0)
+			if(str(character) = "\n") then (TextIO.output(outstream,"\"\"\n");0)
+			else if(str(character) = "\"") then (TextIO.output(outstream,"\"");convert(instream,1,1))
+			else (TextIO.output(outstream,"\""^str(character));convert(instream,1,0))
 		end;
 		
 	(* Primary scanner function which scans the input file line by line *)
@@ -113,10 +117,10 @@ let
 				| SOME(character) => 
 				let
 					(* newLine=processed line, fieldCount2=no of fields of current line *) 
-					val (newLine, fieldCount2) = process character instream
+					val fieldCount2 = process character instream
 				in 
-					(* Printing the processed line in outstream and processing subsequent lines *)
-					TextIO.output(outstream,newLine) before scanner instream fieldCount2 (lineNo+1)
+					(* Processing subsequent lines *)
+					scanner instream fieldCount2 (lineNo+1)
 				end
 		
 		else
@@ -129,12 +133,12 @@ let
 				| SOME(character) => 
 				let 
 					(* newLine=processed line, fieldCount2=no of fields of current line *)
-					val (newLine,fieldCount2) = process character instream
+					val fieldCount2 = process character instream
 				in
 					(* Checking if the current line has the correct number of fields *) 
 					if(fieldCount2 = fieldCount)
-					(* If correct number of fields, then print the processed line on outstream *)
-					then TextIO.output(outstream,newLine) before scanner instream fieldCount (lineNo+1)
+					(* If correct number of fields, then process subsequent lines *)
+					then scanner instream fieldCount (lineNo+1)
 					(* If incorrect, then raise and handle an exception with a custom string as below *)
 					else raise UnevenFields("Expected: "^Int.toString(fieldCount)^" fields, Present: "^Int.toString(fieldCount2)^" fields on Line "^Int.toString(lineNo))
 				end
