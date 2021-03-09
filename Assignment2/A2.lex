@@ -10,12 +10,13 @@ structure Token = Tokens
   val error = fn (e, l:int, _) => TextIO.output(TextIO.stdOut,"line " ^ (Int.toString l) ^ ": " ^ e ^ "\n")
 
 %%
-%header (functor CalcLexFun(structure Tokens:A2_TOKENS));
+%header (functor A2LexFun(structure Tokens:A2_TOKENS));
 
 character=[A-Za-z];
-ws = [\ \t \n];
+ws = [\ \t ];
 %%
 
+"\n"            => (pos := !pos + 1;lex());
 {ws}+           => (lex());
 "NOT"           => (Token.NOT(!pos,!pos));
 "AND"           => (Token.AND(!pos,!pos));
@@ -29,5 +30,7 @@ ws = [\ \t \n];
 ";"             => (Token.TERM(!pos,!pos));
 "("             => (Token.LPAREN(!pos,!pos));
 ")"             => (Token.RPAREN(!pos,!pos));
+"TRUE"             => (Token.CONST(yytext,!pos,!pos));
+"FALSE"             => (Token.CONST(yytext,!pos,!pos));
 {character}+    => (Token.ID(yytext,!pos,!pos));
 .             => (error ("ignoring bad character "^yytext,!pos,!pos);lex());
