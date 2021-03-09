@@ -1,11 +1,12 @@
 
 %%
+(* required declarations *)
 %name A2
 
 %term
   ID of string | CONST of string | NOT | TERM | AND | OR | XOR | EQUALS | IMPLIES | IF | THEN | ELSE | RPAREN | LPAREN | EOF 
 
-%nonterm program | statement | formula | file | conditional | term | expression | factor | binOp
+%nonterm program | statement | formula | file 
 
 %pos int
 
