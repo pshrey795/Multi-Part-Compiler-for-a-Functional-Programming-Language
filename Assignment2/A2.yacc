@@ -1,6 +1,5 @@
 
 %%
-(* required declarations *)
 %name A2
 
 %term
