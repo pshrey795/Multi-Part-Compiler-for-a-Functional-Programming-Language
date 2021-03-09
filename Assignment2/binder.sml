@@ -6,8 +6,8 @@ structure A2Parser =
      	       structure Lex = A2Lex)
      
 fun invoke lexstream =
-    	     	let fun print_error (s,pos:int,_) =
-		    	TextIO.output(TextIO.stdOut, "Error, line " ^ (Int.toString pos) ^ "," ^ s ^ "\n")
+    	     	let fun print_error (s,rowNum:int,colNum:int) =
+		    	TextIO.output(TextIO.stdOut, "Parser Error, line " ^ (Int.toString rowNum) ^ " " ^ (Int.toString colNum) ^ " :" ^ s ^ "\n")
 		in
 		    A2Parser.parse(0,lexstream,print_error,())
 		end

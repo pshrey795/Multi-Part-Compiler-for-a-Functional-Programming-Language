@@ -6,8 +6,12 @@ Expression  ::= Term IMPLIES Expression | Term IMPLIES Conditional | Term2 .
 Term2       ::= Term2 binOp Conditional | Term2 binOp Factor | Factor . 
 Term        ::= Term binOp Conditional | Term binOp Factor | Factor .
 Factor      ::= NOT Factor | LPAREN formula RPAREN | NOT Conditional | CONST | ID .
-binOp       ::= "AND"|"OR"|"XOR"|"EQUALS" .
+binOp       ::= AND|OR|XOR|EQUALS .
 TERM        ::= ";" .
+AND         ::= "AND" .
+OR          ::= "OR" .
+XOR         ::= "XOR" .
+EQUALS      ::= "EQUALS" .
 CONST       ::= "TRUE"|"FALSE" .
 NOT         ::= "NOT" .
 IMPLIES     ::= "IMPLIES" .
@@ -24,3 +28,6 @@ Character   ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" 
                 "w" | "x" | "y" | "z" .
 
 
+Note that in the above production rules, the tokens are shown as terminals without quotes
+while the actual values of the tokens are mentioned in double quotes:
+Example: AND ::= "AND" .

@@ -9,9 +9,11 @@ structure Token = Tokens
   type ('a,'b) token = ('a,'b) Tokens.token  
   type lexresult = (svalue, pos) token
 
-  val pos = ref 0
-  val eof = fn () => Tokens.EOF(!pos, !pos)
-  val error = fn (e, l:int, _) => TextIO.output(TextIO.stdOut,"line " ^ (Int.toString l) ^ ": " ^ e ^ "\n")
+  val rowNum = ref 1;
+  val colNum = ref 1;
+  val endOfLine = ref 0;
+  val eof = fn () => Tokens.EOF(!rowNum, !colNum)
+  val error = fn (e, row:int, col:int) => TextIO.output(TextIO.stdOut,"line " ^ (Int.toString row) ^ " " ^ (Int.toString col) ^ ": " ^ e ^ "\n")
 
 end (* end of user routines *)
 exception LexError (* raised if illegal leaf action tried *)
@@ -487,24 +489,24 @@ let fun continue() = lex() in
 
 			(* Application actions *)
 
-  1 => (pos := !pos + 1;lex())
-| 12 => (Token.AND(!pos,!pos))
-| 15 => (Token.OR(!pos,!pos))
-| 19 => (Token.XOR(!pos,!pos))
-| 26 => (Token.EQUALS(!pos,!pos))
-| 34 => (Token.IMPLIES(!pos,!pos))
-| 37 => (Token.IF(!pos,!pos))
+  1 => (rowNum := !rowNum + 1;endOfLine := yypos;lex())
+| 12 => (print("AND ");colNum := yypos - !(endOfLine);Token.AND(!rowNum,!colNum))
+| 15 => (print("OR ");colNum := yypos - !(endOfLine);Token.OR(!rowNum,!colNum))
+| 19 => (print("XOR ");colNum := yypos - !(endOfLine);Token.XOR(!rowNum,!colNum))
+| 26 => (print("EQUALS ");colNum := yypos - !(endOfLine);Token.EQUALS(!rowNum,!colNum))
+| 34 => (print("IMPLIES ");colNum := yypos - !(endOfLine);Token.IMPLIES(!rowNum,!colNum))
+| 37 => (print("IF ");colNum := yypos - !(endOfLine);Token.IF(!rowNum,!colNum))
 | 4 => (lex())
-| 42 => (Token.THEN(!pos,!pos))
-| 47 => (Token.ELSE(!pos,!pos))
-| 49 => (Token.TERM(!pos,!pos))
-| 51 => (Token.LPAREN(!pos,!pos))
-| 53 => (Token.RPAREN(!pos,!pos))
-| 58 => let val yytext=yymktext() in Token.CONST(yytext,!pos,!pos) end
-| 64 => let val yytext=yymktext() in Token.CONST(yytext,!pos,!pos) end
-| 67 => let val yytext=yymktext() in Token.ID(yytext,!pos,!pos) end
-| 69 => let val yytext=yymktext() in error ("ignoring bad character "^yytext,!pos,!pos);lex() end
-| 8 => (Token.NOT(!pos,!pos))
+| 42 => (print("THEN ");colNum := yypos - !(endOfLine);Token.THEN(!rowNum,!colNum))
+| 47 => (print("ELSE ");colNum := yypos - !(endOfLine);Token.ELSE(!rowNum,!colNum))
+| 49 => (print(";\n");colNum := yypos - !(endOfLine);Token.TERM(!rowNum,!colNum))
+| 51 => (print("(");colNum := yypos - !(endOfLine);Token.LPAREN(!rowNum,!colNum))
+| 53 => (print(")");colNum := yypos - !(endOfLine);Token.RPAREN(!rowNum,!colNum))
+| 58 => let val yytext=yymktext() in print("TRUE ");colNum := yypos - !(endOfLine);Token.CONST(yytext,!rowNum,!colNum) end
+| 64 => let val yytext=yymktext() in print("FALSE ");colNum := yypos - !(endOfLine);Token.CONST(yytext,!rowNum,!colNum) end
+| 67 => let val yytext=yymktext() in print(yytext^" ");colNum := yypos - !(endOfLine);Token.ID(yytext,!rowNum,!colNum) end
+| 69 => let val yytext=yymktext() in colNum := yypos - !(endOfLine);error(yytext,!rowNum,!colNum);lex() end
+| 8 => (print("NOT ");colNum := yypos - !(endOfLine);Token.NOT(!rowNum,!colNum))
 | _ => raise Internal.LexerError
 
 		) end )
