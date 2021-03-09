@@ -1,19 +1,19 @@
 
 %%
 (* required declarations *)
-%name Calc
+%name A2
 
 %term
-  ID of string | NUM of int | IMPLIES | IF | THEN | ELSE | RPAREN | LPAREN | EOF 
+  ID of string | CONST of string | NOT | TERM | AND | OR | XOR | EQUALS | IMPLIES | IF | THEN | ELSE | RPAREN | LPAREN | EOF 
 
-%nonterm program | statement | formula | Expression | Conditional | Term | Factor | binOp
+%nonterm program | statement | formula | file | conditional | term | expression | factor | binOp
 
 %pos int
 
 %eop EOF
 %noshift EOF
 
-%start program
+%start file
 
 %right IF THEN ELSE 
 %right IMPLIES
@@ -24,3 +24,11 @@
 
 %%
 
+file: program ()
+program: statement program ()
+statement: formula TERM ()
+formula: expression () | conditional ()
+conditional: IF formula THEN formula ELSE formula ()
+expression: term IMPLIES expression () | term IMPLIES conditional () | term ()
+term: term AND factor () | term AND conditional () | factor ()
+factor: CONST ()| ID ()| NOT factor ()| LPAREN factor RPAREN () | NOT conditional()

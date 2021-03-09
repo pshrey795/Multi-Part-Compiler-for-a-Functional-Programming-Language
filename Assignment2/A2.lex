@@ -30,4 +30,4 @@ ws = [\ \t \n];
 "("             => (Token.LPAREN(!pos,!pos));
 ")"             => (Token.RPAREN(!pos,!pos));
 {character}+    => (Token.ID(yytext,!pos,!pos));
-"."             => (error ("ignoring bad character "^yytext,!pos,!pos);lex());
+.             => (error ("ignoring bad character "^yytext,!pos,!pos);lex());
