@@ -21,55 +21,6 @@ Term: Term binOp Factor () | Factor()
 Factor: NOT Factor() | LPAREN formula RPAREN () | CONST () | ID ()
 binOp: AND ()| OR ()| XOR ()| EQUALS ()
 
-all: lexer.lex.sml parser.yacc.*
-	mlton a2.mlb
-
-lexer.lex.sml: lexer.lex
-	mllex lexer.lex
-
-parser.yacc.*: parser.yacc
-	mlyacc parser.yacc
-
-clean:
-	rm lexer.lex.* parser.yacc.* a2
-
-fun printLexer ls1 = 
-  let
-      fun copyString ls1 [] = "EOF]"::ls1
-      | copyString ls1 x::ls2 = copyString (x^", ")::ls1 ls2
-  in
-      print(reverse(copyString [] ls1,[]))
-  end 
-
-  fun reverse([],ls)= ls
-  | reverse(x::ls1,ls) = reverse(ls1,x::ls)
-
-
-
-
-
-  structure Token = Tokens
-  
-  type pos = int
-  type svalue = Tokens.svalue
-  type ('a,'b) token = ('a,'b) Tokens.token  
-  type lexresult = (svalue, pos) token
-
-  val rowNum = ref 1;
-  val colNum = ref 1;
-  val endOfLine = ref 0;
-  val outList = ref (""::[]);
-   
-  val eof = (printLexer(!outList);fn () => Tokens.EOF(!rowNum, !colNum))
-  val error = fn (e, row:int, col:int) => TextIO.output(TextIO.stdOut,"line " ^ (Int.toString row) ^ " " ^ (Int.toString col) ^ ": " ^ e ^ "\n")
-
-
-%%
-%header (functor A2LexFun(structure Tokens:A2_TOKENS));
-
-character=[A-Za-z];
-ws = [\ \t ];
-%%
 
 "\n"            => (rowNum := !rowNum + 1;endOfLine := yypos;lex());
 {ws}+           => (lex());

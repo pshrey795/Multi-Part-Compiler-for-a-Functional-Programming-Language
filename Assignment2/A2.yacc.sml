@@ -9,7 +9,6 @@ struct
 structure Header = 
 struct
 
-
 end
 structure LrTable = Token.LrTable
 structure Token = Token
@@ -204,18 +203,18 @@ fn (i392,defaultPos,stack,
 case (i392,stack)
 of  ( 0, ( ( _, ( MlyValue.ntVOID program1, program1left, 
 program1right)) :: rest671)) => let val  result = MlyValue.ntVOID (fn
- _ => ( let val  program1 = program1 ()
- in ()
+ _ => ( let val  (program as program1) = program1 ()
+ in (print("file => program"))
 end; ()))
  in ( LrTable.NT 3, ( result, program1left, program1right), rest671)
 
 end
 |  ( 1, ( ( _, ( MlyValue.ntVOID program1, _, program1right)) :: ( _, 
 ( MlyValue.ntVOID statement1, statement1left, _)) :: rest671)) => let
- val  result = MlyValue.ntVOID (fn _ => ( let val  statement1 = 
-statement1 ()
- val  program1 = program1 ()
- in ()
+ val  result = MlyValue.ntVOID (fn _ => ( let val  (statement as 
+statement1) = statement1 ()
+ val  (program as program1) = program1 ()
+ in (print("program => {statement}"))
 end; ()))
  in ( LrTable.NT 0, ( result, statement1left, program1right), rest671)
 
@@ -226,7 +225,7 @@ end
 |  ( 3, ( ( _, ( _, _, TERM1right)) :: ( _, ( MlyValue.ntVOID formula1
 , formula1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID
  (fn _ => ( let val  (formula as formula1) = formula1 ()
- in (print("statement -> formula TERM\n"))
+ in (print("statement => formula TERM\n"))
 end; ()))
  in ( LrTable.NT 1, ( result, formula1left, TERM1right), rest671)
 end
@@ -237,7 +236,7 @@ result = MlyValue.ntVOID (fn _ => ( let val  (formula as formula1) =
 formula1 ()
  val  formula2 = formula2 ()
  val  formula3 = formula3 ()
- in (print("formula -> IF formula THEN formula ELSE formula\n"))
+ in (print("formula => IF formula THEN formula ELSE formula\n"))
 end;
  ()))
  in ( LrTable.NT 2, ( result, IF1left, formula3right), rest671)
@@ -245,7 +244,7 @@ end
 |  ( 5, ( ( _, ( MlyValue.ntVOID Expression1, Expression1left, 
 Expression1right)) :: rest671)) => let val  result = MlyValue.ntVOID
  (fn _ => ( let val  (Expression as Expression1) = Expression1 ()
- in (print("formula -> Expression\n"))
+ in (print("formula => Expression\n"))
 end; ()))
  in ( LrTable.NT 2, ( result, Expression1left, Expression1right), 
 rest671)
@@ -255,7 +254,7 @@ end
  val  result = MlyValue.ntVOID (fn _ => ( let val  (Term as Term1) = 
 Term1 ()
  val  (Expression as Expression1) = Expression1 ()
- in (print("Expression -> Term IMPLIES Expression\n"))
+ in (print("Expression => Term IMPLIES Expression\n"))
 end; ()))
  in ( LrTable.NT 4, ( result, Term1left, Expression1right), rest671)
 
@@ -263,7 +262,7 @@ end
 |  ( 7, ( ( _, ( MlyValue.ntVOID Term1, Term1left, Term1right)) :: 
 rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val  (
 Term as Term1) = Term1 ()
- in (print("Expression -> Term\n"))
+ in (print("Expression => Term\n"))
 end; ()))
  in ( LrTable.NT 4, ( result, Term1left, Term1right), rest671)
 end
@@ -273,21 +272,21 @@ Term1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID (fn _
  => ( let val  (Term as Term1) = Term1 ()
  val  (binOp as binOp1) = binOp1 ()
  val  (Factor as Factor1) = Factor1 ()
- in (print("Term -> Term binOp Factor\n"))
+ in (print("Term => Term binOp Factor\n"))
 end; ()))
  in ( LrTable.NT 5, ( result, Term1left, Factor1right), rest671)
 end
 |  ( 9, ( ( _, ( MlyValue.ntVOID Factor1, Factor1left, Factor1right))
  :: rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val 
  (Factor as Factor1) = Factor1 ()
- in (print("Term -> Factor\n"))
+ in (print("Term => Factor\n"))
 end; ()))
  in ( LrTable.NT 5, ( result, Factor1left, Factor1right), rest671)
 end
 |  ( 10, ( ( _, ( MlyValue.ntVOID Factor1, _, Factor1right)) :: ( _, (
  _, NOT1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID
  (fn _ => ( let val  (Factor as Factor1) = Factor1 ()
- in (print("Factor -> NOT Factor\n"))
+ in (print("Factor => NOT Factor\n"))
 end; ()))
  in ( LrTable.NT 6, ( result, NOT1left, Factor1right), rest671)
 end
@@ -295,38 +294,38 @@ end
 formula1, _, _)) :: ( _, ( _, LPAREN1left, _)) :: rest671)) => let
  val  result = MlyValue.ntVOID (fn _ => ( let val  (formula as 
 formula1) = formula1 ()
- in (print("Factor -> LPAREN formula RPAREN\n"))
+ in (print("Factor => LPAREN formula RPAREN\n"))
 end; ()))
  in ( LrTable.NT 6, ( result, LPAREN1left, RPAREN1right), rest671)
 end
 |  ( 12, ( ( _, ( MlyValue.CONST CONST1, CONST1left, CONST1right)) :: 
 rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val  (
 CONST as CONST1) = CONST1 ()
- in (print("Factor -> CONST\n"))
+ in (print("Factor => CONST\n"))
 end; ()))
  in ( LrTable.NT 6, ( result, CONST1left, CONST1right), rest671)
 end
 |  ( 13, ( ( _, ( MlyValue.ID ID1, ID1left, ID1right)) :: rest671)) =>
  let val  result = MlyValue.ntVOID (fn _ => ( let val  (ID as ID1) = 
 ID1 ()
- in (print("Factor -> ID\n"))
+ in (print("Factor => ID\n"))
 end; ()))
  in ( LrTable.NT 6, ( result, ID1left, ID1right), rest671)
 end
 |  ( 14, ( ( _, ( _, AND1left, AND1right)) :: rest671)) => let val  
-result = MlyValue.ntVOID (fn _ => (print("binOp -> AND\n")))
+result = MlyValue.ntVOID (fn _ => (print("binOp => AND\n")))
  in ( LrTable.NT 7, ( result, AND1left, AND1right), rest671)
 end
 |  ( 15, ( ( _, ( _, OR1left, OR1right)) :: rest671)) => let val  
-result = MlyValue.ntVOID (fn _ => (print("binOp -> OR\n")))
+result = MlyValue.ntVOID (fn _ => (print("binOp => OR\n")))
  in ( LrTable.NT 7, ( result, OR1left, OR1right), rest671)
 end
 |  ( 16, ( ( _, ( _, XOR1left, XOR1right)) :: rest671)) => let val  
-result = MlyValue.ntVOID (fn _ => (print("binOp -> XOR\n")))
+result = MlyValue.ntVOID (fn _ => (print("binOp => XOR\n")))
  in ( LrTable.NT 7, ( result, XOR1left, XOR1right), rest671)
 end
 |  ( 17, ( ( _, ( _, EQUALS1left, EQUALS1right)) :: rest671)) => let
- val  result = MlyValue.ntVOID (fn _ => (print("binOp -> EQUALS\n")))
+ val  result = MlyValue.ntVOID (fn _ => (print("binOp => EQUALS\n")))
  in ( LrTable.NT 7, ( result, EQUALS1left, EQUALS1right), rest671)
 end
 | _ => raise (mlyAction i392)

@@ -5,6 +5,7 @@ structure A2Parser =
      	       structure ParserData = A2LrVals.ParserData
      	       structure Lex = A2Lex)
      
+(* Invoking the parser *)
 fun invoke lexstream =
     let 
 		fun print_error (s,rowNum:int,colNum:int) =
@@ -13,6 +14,7 @@ fun invoke lexstream =
 		A2Parser.parse(0,lexstream,print_error,())
 	end
 
+(* Taking a file input *)
 fun fileToLexer fileName =
     let 
 		val instream = TextIO.openIn fileName
@@ -24,6 +26,7 @@ fun fileToLexer fileName =
 		lexer
     end	
 
+(* Executing the lexer and parser *)
 fun parse (lexer) =
     let 
 		val dummyEOF = A2LrVals.Tokens.EOF(0,0)
@@ -33,8 +36,9 @@ fun parse (lexer) =
         if A2Parser.sameToken(nextToken, dummyEOF) then result
  		else (TextIO.output(TextIO.stdOut, "Warning: Unconsumed input \n"); result)
     end
+	handle TokenError => () 
 
-val parseString = parse o fileToLexer
+val a2 = parse o fileToLexer
 
 
 

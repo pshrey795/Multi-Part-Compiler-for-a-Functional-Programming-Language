@@ -9,15 +9,19 @@ structure Token = Tokens
   type ('a,'b) token = ('a,'b) Tokens.token  
   type lexresult = (svalue, pos) token
 
+  exception TokenError
+
   val rowNum = ref 1;
   val colNum = ref 1;
   val firstLine = ref 0;
   val endOfLine = ref 0;
    
+  
   val eof = fn () =>
   let val _ = print("EOF]\n\n")
   in Tokens.EOF(!rowNum, !colNum)
   end
+
   val error = fn (e, row:int, col:int) => TextIO.output(TextIO.stdOut,"Unknown Token:" ^ (Int.toString row) ^ ":" ^ (Int.toString col) ^ ":" ^ e ^ "\n")
 
 
@@ -511,7 +515,7 @@ let fun continue() = lex() in
 | 58 => let val yytext=yymktext() in if (!firstLine)=0 then (print("[");firstLine:=1) else print("");print("CONST \"TRUE\", ");colNum := yypos - !(endOfLine);Token.CONST(yytext,!rowNum,!colNum) end
 | 64 => let val yytext=yymktext() in if (!firstLine)=0 then (print("[");firstLine:=1) else print("");print("CONST \"FALSE\", ");colNum := yypos - !(endOfLine);Token.CONST(yytext,!rowNum,!colNum) end
 | 67 => let val yytext=yymktext() in if (!firstLine)=0 then (print("[");firstLine:=1) else print("");print("ID \""^yytext^"\", ");colNum := yypos - !(endOfLine);Token.ID(yytext,!rowNum,!colNum) end
-| 69 => let val yytext=yymktext() in colNum := yypos - !(endOfLine);error(yytext,!rowNum,!colNum);lex() end
+| 69 => let val yytext=yymktext() in colNum := yypos - !(endOfLine)-size yytext;error(yytext,!rowNum,!colNum);raise TokenError end
 | 8 => (if (!firstLine)=0 then (print("[");firstLine:=1) else print("");print("NOT \"NOT\", ");colNum := yypos - !(endOfLine);Token.NOT(!rowNum,!colNum))
 | _ => raise Internal.LexerError
 
