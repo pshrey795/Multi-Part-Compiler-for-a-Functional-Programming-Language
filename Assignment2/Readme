@@ -1,0 +1,36 @@
+--Contents of the submission:
+1) EBNF.txt 
+2) A2.lex (lexer specification)
+3) A2.yacc (parser specification)
+4) binder.sml (glue file which integrates the lexer and parser code)
+5) loader.html (file that loads all the pre-requisite libraries as well as the above files into the SML interactive
+ environment)
+6) Makefile 
+
+--Steps of execution
+1) Use the command "make all" to build all the above files and load them in the SML environment.
+2) To execute the lexer and parser, type the command "a2 <input_file>" on the SML prompt. 
+3) At the end of the execution, you can use "make clean" to remove all the compiled .lex and .yacc files.
+
+--Output format
+1) Lexer output format: The lexer output will contain a list of comma separated fields, where each field is of the 
+                        form "<TOKEN_TYPE> "<TOKEN_NAME>"", and these tokens are read from the input_file provided.
+    
+    Error handling: In case an invalid token is encountered in the input stream, the lexer stops further processing
+                    and throws an error of the form "Unknown Token:row_num:col_num:token"
+
+
+2) Parser output format: The parser will output a list of productions in post order with respect to the generated
+                         parse tree in their literal form. 
+
+    Error handling: In case of a parse error, the parser stops processing any further tokens and raises a syntax 
+                    error of the form "Syntax Error:row_num:col_num"
+
+
+--Note(IMPORTANT)
+I couldn't install mlton compiler on my Ubuntu 20.10 groovy because of compatibility issues, and I discovered
+    that due to this I couldn't implement some features that the assignment statement mentioned:
+    
+    a) I couldn't generate an executable because of no compiler to build the binder.sml with. 
+    b) I also couldn't print the particular production rule which raises the syntax error and this also seems to be
+        due to the absence of mlton compiler as I can't pass the particular production rule between files.

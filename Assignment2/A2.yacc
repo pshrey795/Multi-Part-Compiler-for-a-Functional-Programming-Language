@@ -26,8 +26,8 @@
 %%
 
 (* Production Rules along with printing them *)
-file: program (print("file => program"))
-program: statement program (print("program => {statement}")) | ()
+file: program (print("file => \n"))
+program: statement program (print("program => {statement}\n")) | ()
 statement: formula TERM (print("statement => formula TERM\n"))
 formula: IF formula THEN formula ELSE formula (print("formula => IF formula THEN formula ELSE formula\n")) | Expression (print("formula => Expression\n"))
 Expression: Term IMPLIES Expression (print("Expression => Term IMPLIES Expression\n")) | Term (print("Expression => Term\n"))
