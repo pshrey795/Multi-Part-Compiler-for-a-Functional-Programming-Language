@@ -6,28 +6,36 @@ structure A2Parser =
      	       structure Lex = A2Lex)
      
 fun invoke lexstream =
-    	     	let fun print_error (s,rowNum:int,colNum:int) =
-		    	TextIO.output(TextIO.stdOut, "Parser Error, line " ^ (Int.toString rowNum) ^ " " ^ (Int.toString colNum) ^ " :" ^ s ^ "\n")
-		in
-		    A2Parser.parse(0,lexstream,print_error,())
-		end
+    let 
+		fun print_error (s,rowNum:int,colNum:int) =
+		TextIO.output(TextIO.stdOut, "Syntax Error:" ^ (Int.toString rowNum) ^ ":" ^ (Int.toString colNum) ^ ":" ^ s ^ "\n")
+	in
+		A2Parser.parse(0,lexstream,print_error,())
+	end
 
-fun stringToLexer str =
-    let val done = ref false
-    	val lexer=  A2Parser.makeLexer (fn _ => if (!done) then "" else (done:=true;str))
+fun fileToLexer fileName =
+    let 
+		val instream = TextIO.openIn fileName
+		val inputString = TextIO.input instream
+		val _ = TextIO.closeIn instream
+		val done = ref false
+    	val lexer =  A2Parser.makeLexer (fn _ => if (!done) then "" else (done:=true;inputString))
     in
-	lexer
+		lexer
     end	
-		
+
 fun parse (lexer) =
-    let val dummyEOF = A2LrVals.Tokens.EOF(0,0)
+    let 
+		val dummyEOF = A2LrVals.Tokens.EOF(0,0)
     	val (result, lexer) = invoke lexer
-	val (nextToken, lexer) = A2Parser.Stream.get lexer
+		val (nextToken, lexer) = A2Parser.Stream.get lexer
     in
         if A2Parser.sameToken(nextToken, dummyEOF) then result
- 	else (TextIO.output(TextIO.stdOut, "Warning: Unconsumed input \n"); result)
+ 		else (TextIO.output(TextIO.stdOut, "Warning: Unconsumed input \n"); result)
     end
 
-val parseString = parse o stringToLexer
+val parseString = parse o fileToLexer
+
+
 
 

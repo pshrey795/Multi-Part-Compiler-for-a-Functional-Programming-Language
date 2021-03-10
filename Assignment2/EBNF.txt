@@ -1,11 +1,9 @@
 program     ::= {statement} EOF .
 statement   ::= formula TERM .
-formula     ::= Conditional | Expression .
-Conditional ::= IF formula THEN formula ELSE formula .
-Expression  ::= Term IMPLIES Expression | Term IMPLIES Conditional | Term2 .
-Term2       ::= Term2 binOp Conditional | Term2 binOp Factor | Factor . 
-Term        ::= Term binOp Conditional | Term binOp Factor | Factor .
-Factor      ::= NOT Factor | LPAREN formula RPAREN | NOT Conditional | CONST | ID .
+formula     ::= IF formula THEN formula ELSE formula | Expression
+Expression  ::= Term IMPLIES Expression | Term.
+Term        ::= Term binOp Factor | Factor .
+Factor      ::= NOT Factor | LPAREN formula RPAREN | IF formula THEN formula ELSE formula | CONST | ID 
 binOp       ::= AND|OR|XOR|EQUALS .
 TERM        ::= ";" .
 AND         ::= "AND" .

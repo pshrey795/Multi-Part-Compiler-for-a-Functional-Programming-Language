@@ -3,58 +3,89 @@ state 0:
 
 	file : . program 
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	IF	shift 8
+	LPAREN	shift 7
 
-	program	goto 3
-	statement	goto 2
-	formula	goto 1
-	file	goto 29
+	program	goto 6
+	statement	goto 5
+	formula	goto 4
+	file	goto 30
+	Expression	goto 3
+	Term	goto 2
+	Factor	goto 1
 
 	.	reduce by rule 2
 
 
 state 1:
 
-	statement : formula . TERM 
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
+	Term : Factor .  (reduce by rule 9)
 
-	TERM	shift 14
-	AND	shift 13
-	OR	shift 12
-	XOR	shift 11
-	EQUALS	shift 10
-	IMPLIES	shift 9
+
+
+	.	reduce by rule 9
+
+
+state 2:
+
+	Expression : Term . IMPLIES Expression 
+	Expression : Term .  (reduce by rule 7)
+	Term : Term . binOp Factor 
+
+	AND	shift 17
+	OR	shift 16
+	XOR	shift 15
+	EQUALS	shift 14
+	IMPLIES	shift 13
+
+	binOp	goto 12
+
+	.	reduce by rule 7
+
+
+state 3:
+
+	formula : Expression .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 4:
+
+	statement : formula . TERM 
+
+	TERM	shift 18
 
 
 	.	error
 
 
-state 2:
+state 5:
 
 	program : statement . program 
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	IF	shift 8
+	LPAREN	shift 7
 
-	program	goto 15
-	statement	goto 2
-	formula	goto 1
+	program	goto 19
+	statement	goto 5
+	formula	goto 4
+	Expression	goto 3
+	Term	goto 2
+	Factor	goto 1
 
 	.	reduce by rule 2
 
 
-state 3:
+state 6:
 
 	file : program .  (reduce by rule 0)
 
@@ -63,145 +94,141 @@ state 3:
 	.	reduce by rule 0
 
 
-state 4:
-
-	formula : LPAREN . formula RPAREN 
-
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
-
-	formula	goto 16
-
-	.	error
-
-
-state 5:
-
-	formula : IF . formula THEN formula ELSE formula 
-
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
-
-	formula	goto 17
-
-	.	error
-
-
-state 6:
-
-	formula : NOT . formula 
-
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
-
-	formula	goto 18
-
-	.	error
-
-
 state 7:
 
-	formula : CONST .  (reduce by rule 13)
+	Factor : LPAREN . formula RPAREN 
 
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	IF	shift 8
+	LPAREN	shift 7
 
+	formula	goto 20
+	Expression	goto 3
+	Term	goto 2
+	Factor	goto 1
 
-	.	reduce by rule 13
+	.	error
 
 
 state 8:
 
-	formula : ID .  (reduce by rule 12)
+	formula : IF . formula THEN formula ELSE formula 
 
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	IF	shift 8
+	LPAREN	shift 7
 
+	formula	goto 21
+	Expression	goto 3
+	Term	goto 2
+	Factor	goto 1
 
-	.	reduce by rule 12
+	.	error
 
 
 state 9:
 
-	formula : formula IMPLIES . formula 
+	Factor : NOT . Factor 
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	LPAREN	shift 7
 
-	formula	goto 19
+	Factor	goto 22
 
 	.	error
 
 
 state 10:
 
-	formula : formula EQUALS . formula 
+	Factor : CONST .  (reduce by rule 12)
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
 
-	formula	goto 20
 
-	.	error
+	.	reduce by rule 12
 
 
 state 11:
 
-	formula : formula XOR . formula 
+	Factor : ID .  (reduce by rule 13)
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
 
-	formula	goto 21
 
-	.	error
+	.	reduce by rule 13
 
 
 state 12:
 
-	formula : formula OR . formula 
+	Term : Term binOp . Factor 
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	LPAREN	shift 7
 
-	formula	goto 22
+	Factor	goto 23
 
 	.	error
 
 
 state 13:
 
-	formula : formula AND . formula 
+	Expression : Term IMPLIES . Expression 
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	LPAREN	shift 7
 
-	formula	goto 23
+	Expression	goto 24
+	Term	goto 2
+	Factor	goto 1
 
 	.	error
 
 
 state 14:
+
+	binOp : EQUALS .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 15:
+
+	binOp : XOR .  (reduce by rule 16)
+
+
+
+	.	reduce by rule 16
+
+
+state 16:
+
+	binOp : OR .  (reduce by rule 15)
+
+
+
+	.	reduce by rule 15
+
+
+state 17:
+
+	binOp : AND .  (reduce by rule 14)
+
+
+
+	.	reduce by rule 14
+
+
+state 18:
 
 	statement : formula TERM .  (reduce by rule 3)
 
@@ -210,7 +237,7 @@ state 14:
 	.	reduce by rule 3
 
 
-state 15:
+state 19:
 
 	program : statement program .  (reduce by rule 1)
 
@@ -219,214 +246,118 @@ state 15:
 	.	reduce by rule 1
 
 
-state 16:
+state 20:
 
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
-	formula : LPAREN formula . RPAREN 
+	Factor : LPAREN formula . RPAREN 
 
-	AND	shift 13
-	OR	shift 12
-	XOR	shift 11
-	EQUALS	shift 10
-	IMPLIES	shift 9
-	RPAREN	shift 24
+	RPAREN	shift 25
 
 
 	.	error
 
 
-state 17:
+state 21:
 
 	formula : IF formula . THEN formula ELSE formula 
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
 
-	AND	shift 13
-	OR	shift 12
-	XOR	shift 11
-	EQUALS	shift 10
-	IMPLIES	shift 9
-	THEN	shift 25
+	THEN	shift 26
 
 
 	.	error
 
 
-state 18:
+state 22:
 
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
-	formula : NOT formula .  (reduce by rule 10)
+	Factor : NOT Factor .  (reduce by rule 10)
 
 
 
 	.	reduce by rule 10
 
 
-state 19:
+state 23:
 
-	formula : formula . IMPLIES formula 
-	formula : formula IMPLIES formula .  (reduce by rule 5)
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
-
-	AND	shift 13
-	OR	shift 12
-	XOR	shift 11
-	EQUALS	shift 10
-	IMPLIES	shift 9
-
-
-	.	reduce by rule 5
-
-
-state 20:
-
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
-	formula : formula EQUALS formula .  (reduce by rule 9)
-
-
-
-	.	reduce by rule 9
-
-
-state 21:
-
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula XOR formula .  (reduce by rule 8)
-	formula : formula . EQUALS formula 
+	Term : Term binOp Factor .  (reduce by rule 8)
 
 
 
 	.	reduce by rule 8
 
 
-state 22:
+state 24:
 
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula OR formula .  (reduce by rule 7)
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
-
-
-
-	.	reduce by rule 7
-
-
-state 23:
-
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula AND formula .  (reduce by rule 6)
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
+	Expression : Term IMPLIES Expression .  (reduce by rule 6)
 
 
 
 	.	reduce by rule 6
 
 
-state 24:
+state 25:
 
-	formula : LPAREN formula RPAREN .  (reduce by rule 11)
+	Factor : LPAREN formula RPAREN .  (reduce by rule 11)
 
 
 
 	.	reduce by rule 11
 
 
-state 25:
+state 26:
 
 	formula : IF formula THEN . formula ELSE formula 
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	IF	shift 8
+	LPAREN	shift 7
 
-	formula	goto 26
-
-	.	error
-
-
-state 26:
-
-	formula : IF formula THEN formula . ELSE formula 
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
-
-	AND	shift 13
-	OR	shift 12
-	XOR	shift 11
-	EQUALS	shift 10
-	IMPLIES	shift 9
-	ELSE	shift 27
-
+	formula	goto 27
+	Expression	goto 3
+	Term	goto 2
+	Factor	goto 1
 
 	.	error
 
 
 state 27:
 
-	formula : IF formula THEN formula ELSE . formula 
+	formula : IF formula THEN formula . ELSE formula 
 
-	ID	shift 8
-	CONST	shift 7
-	NOT	shift 6
-	IF	shift 5
-	LPAREN	shift 4
+	ELSE	shift 28
 
-	formula	goto 28
 
 	.	error
 
 
 state 28:
 
-	formula : IF formula THEN formula ELSE formula .  (reduce by rule 4)
-	formula : formula . IMPLIES formula 
-	formula : formula . AND formula 
-	formula : formula . OR formula 
-	formula : formula . XOR formula 
-	formula : formula . EQUALS formula 
+	formula : IF formula THEN formula ELSE . formula 
 
-	AND	shift 13
-	OR	shift 12
-	XOR	shift 11
-	EQUALS	shift 10
-	IMPLIES	shift 9
+	ID	shift 11
+	CONST	shift 10
+	NOT	shift 9
+	IF	shift 8
+	LPAREN	shift 7
+
+	formula	goto 29
+	Expression	goto 3
+	Term	goto 2
+	Factor	goto 1
+
+	.	error
+
+
+state 29:
+
+	formula : IF formula THEN formula ELSE formula .  (reduce by rule 4)
+
 
 
 	.	reduce by rule 4
 
 
-state 29:
+state 30:
 
 
 	EOF	accept
@@ -434,5 +365,5 @@ state 29:
 
 	.	error
 
-45 of 125 action table entries left after compaction
-17 goto table entries
+24 of 83 action table entries left after compaction
+35 goto table entries
