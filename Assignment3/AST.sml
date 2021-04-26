@@ -19,7 +19,7 @@ datatype binop = BoolOp of binop1
 
 datatype decl = ValDecl of id * exp
 
-and fundecl = Fun of id * id * typ * typ
+and fundecl = Fun of id * id * typ * typ           
 	      | Fn of id * typ * typ
 
 and exp = ConditionExp of exp * exp * exp    
@@ -37,3 +37,5 @@ datatype program = ExpList of exp list
 fun addExp(e:exp, pr:program) = case pr of ExpList(ls) => ExpList(e::ls)
 
 end
+
+

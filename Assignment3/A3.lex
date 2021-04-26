@@ -9,11 +9,12 @@ structure Token = Tokens
 
   val rowNum = ref 1;
   val colNum = ref 1;
+  val firstLine = ref 0;
   val endOfLine = ref 0;
    
   
   val eof = fn () =>
-  let val _ = print("EOF]\n\n")
+  let val _ = print("EOF\n\n")
   in Tokens.EOF(!rowNum, !colNum)
   end
 
@@ -43,7 +44,7 @@ newline = [\r \n \r\n];
 "MINUS"         	=> (print("MINUS \"MINUS\", ");colNum := yypos - !(endOfLine);Token.MINUS(!rowNum,!colNum));
 "TIMES"         	=> (print("TIMES \"TIMES\", ");colNum := yypos - !(endOfLine);Token.TIMES(!rowNum,!colNum));
 "GREATERTHAN"   	=> (print("GREATERTHAN \"GREATERTHAN\", ");colNum := yypos - !(endOfLine);Token.GREATERTHAN(!rowNum,!colNum));
-"LESSTHEN"      	=> (print("LESSTHAN \"LESSTHAN\", ");colNum := yypos - !(endOfLine);Token.LESSTHAN(!rowNum,!colNum));
+"LESSTHAN"      	=> (print("LESSTHAN \"LESSTHAN\", ");colNum := yypos - !(endOfLine);Token.LESSTHAN(!rowNum,!colNum));
 "IMPLIES"       	=> (print("IMPLIES \"IMPLIES\", ");colNum := yypos - !(endOfLine);Token.IMPLIES(!rowNum,!colNum));
 "let"           	=> (print("LET \"let\", ");colNum := yypos - !(endOfLine);Token.LET(!rowNum,!colNum));
 "in"            	=> (print("IN \"in\", ");colNum := yypos - !(endOfLine);Token.IN(!rowNum,!colNum));

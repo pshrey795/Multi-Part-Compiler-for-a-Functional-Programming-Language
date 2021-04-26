@@ -6,6 +6,7 @@ structure A3Parser =	Join(structure LrParser = LrParser
 
 open AST
 open TYPECHECK 
+open EVALUATE
      
 fun invoke lexstream =
 	let 
@@ -39,5 +40,36 @@ fun parse (lexer) =
 
 
 val run = parse o fileToLexer
+
+fun typeCheckList fileName= 
+let
+	val k = run fileName
+	fun checkType([],env:typeEnv) = true
+	| checkType(e::pr,env:typeEnv) = 
+	let
+		val (t,updatedEnv) = typeCheck(e,env)
+	in
+		checkType(pr,updatedEnv)
+	end
+in
+	case k of
+	ExpList(e) => checkType(e,[])
+end
+
+fun evaluate fileName=
+let 
+	val k = run fileName 
+	fun evalList([],env:environment) = []
+	| evalList(e::pr,env:environment) = 
+	let
+		val (v,updatedEnv) = evalExp(e,env)
+	in
+		v::evalList(pr,updatedEnv)
+	end
+in
+	case k of
+	ExpList(e) => evalList(e,[])
+end
+	
 
 
