@@ -41,19 +41,19 @@ fun parse (lexer) =
 
 val run = parse o fileToLexer
 
-fun typeCheckList fileName= 
+fun checkType fileName= 
 let
 	val k = run fileName
-	fun checkType([],env:typeEnv) = true
-	| checkType(e::pr,env:typeEnv) = 
+	fun typeCheckList([],env:typeEnv,expNo:int) = true
+	| typeCheckList(e::pr,env:typeEnv,expNo) = 
 	let
-		val (t,updatedEnv) = typeCheck(e,env)
+		val (t,updatedEnv) = typeCheck(e,env,expNo)
 	in
-		checkType(pr,updatedEnv)
+		typeCheckList(pr,updatedEnv,expNo+1)
 	end
 in
 	case k of
-	ExpList(e) => checkType(e,[])
+	ExpList(e) => typeCheckList(e,[],1)
 end
 
 fun evaluate fileName=
@@ -64,11 +64,14 @@ let
 	let
 		val (v,updatedEnv) = evalExp(e,env)
 	in
-		v::evalList(pr,updatedEnv)
+		case v of
+		LambdaVal(i1,e1)    => evalList(pr,updatedEnv)
+		| _                 => v::evalList(pr,updatedEnv)
 	end
 in
-	case k of
+	if checkType fileName then case k of
 	ExpList(e) => evalList(e,[])
+	else []
 end
 	
 

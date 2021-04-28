@@ -17,21 +17,21 @@ datatype binop = BoolOp of binop1
                 | RelOp of binop3
                 | Equals
 
-datatype decl = ValDecl of id * exp
+datatype decl = ValDecl of id * exp  
 
 and fundecl = Fun of id * id * typ * typ           
 	      | Fn of id * typ * typ
 
 and exp = ConditionExp of exp * exp * exp    
-        | BinExp of binop * exp * exp
+        | BinExp of binop * exp * exp		
         | UnaryExp of unop * exp
         | VarExp of id
         | ConstExp of const 
         | LetExp of decl * exp
         | IntExp of int
-        | AppExp of exp * exp
+        | AppExp of exp * exp 
         | DeclExp of fundecl * exp
-
+        
 datatype program = ExpList of exp list
 
 fun addExp(e:exp, pr:program) = case pr of ExpList(ls) => ExpList(e::ls)

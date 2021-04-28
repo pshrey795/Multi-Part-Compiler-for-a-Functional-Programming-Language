@@ -71,12 +71,13 @@ and
 evalLambdaExp(e1:exp,e2:exp,env:environment) = 
 let
 	val (v,_) = evalExp(e2,env)
-	val v1 =
+	val (v1,updatedEnv) =
 	case e1 of
-	DeclExp(Fn(i1,_,_),e3)	=> LambdaVal(i1,e3) 
-	| VarExp(i)		=> envLookup(i,env)
+	DeclExp(Fn(i1,_,_),e3)	=> (LambdaVal(i1,e3),env) 
+	| VarExp(i)		=> (envLookup(i,env),env)
+	| AppExp(x,y) 		=> (evalLambdaExp(x,y,env))
 in
-	case v1 of LambdaVal(i,e3) => evalExp(e3,envAdd(i,v,env))		   
+	case v1 of LambdaVal(i,e3) => evalExp(e3,envAdd(i,v,updatedEnv))		   
 end
 
 
