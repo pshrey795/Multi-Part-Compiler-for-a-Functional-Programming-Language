@@ -54,7 +54,11 @@ case e of
 				   	| Equals      => (BOOL,env)
 				   	| Nequals     => (BOOL,env)
 				   end 
-| LetExp(ValDecl(i,e1),e2)      => typeCheck(e2,typeEnvAdd(i,let val (t,_) = typeCheck(e1,env,expNo) in t end,env),expNo)
+| LetExp(ValDecl(i,e1),e2)      => let
+					val (t,_) = typeCheck(e2,typeEnvAdd(i,let val (t,_) = typeCheck(e1,env,expNo) in t end,env),expNo)
+				   in
+				   	(t,env)
+				   end
 | AppExp(e1,e2)                 => let 
 				   	val (t1,_) = typeCheck(e1,env,expNo)
 				   	val (t2,_) = typeCheck(e2,env,expNo)
