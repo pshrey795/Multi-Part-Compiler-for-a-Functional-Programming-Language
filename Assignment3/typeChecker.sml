@@ -52,6 +52,7 @@ case e of
 				   	| RelOp(x)    => if t1=INT then (BOOL,env) 
 				   	  else (print("Both operands should be of int type with a relation operator in the expression number "^Int.toString(expNo)^"\n");raise invalidType)
 				   	| Equals      => (BOOL,env)
+				   	| Nequals     => (BOOL,env)
 				   end 
 | LetExp(ValDecl(i,e1),e2)      => typeCheck(e2,typeEnvAdd(i,let val (t,_) = typeCheck(e1,env,expNo) in t end,env),expNo)
 | AppExp(e1,e2)                 => let 

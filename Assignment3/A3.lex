@@ -64,6 +64,7 @@ newline = [\r \n \r\n];
 "="             	=> (print("ASSN \"=\", ");colNum := yypos - !(endOfLine);Token.ASSN(!rowNum,!colNum));
 "->"			=> (print("ARROW \"->\", ");colNum := yypos - !(endOfLine);Token.ARROW(!rowNum,!colNum));
 "=>"			=> (print("DEC \"=>\", ");colNum := yypos - !(endOfLine);Token.DEC(!rowNum,!colNum));
+"NEQUALS"		=> (print("NEQUALS \"NEQUALS\", ");colNum := yypos - !(endOfLine);Token.NEQUALS(!rowNum,!colNum));
 "TRUE"          	=> (print("CONST \"TRUE\", ");colNum := yypos - !(endOfLine);Token.CONST(yytext,!rowNum,!colNum));
 "FALSE"         	=> (print("CONST \"FALSE\", ");colNum := yypos - !(endOfLine);Token.CONST(yytext,!rowNum,!colNum));
 [a-zA-z]{variable}*    	=> (print("ID \""^yytext^"\", ");colNum := yypos - !(endOfLine);Token.ID(yytext,!rowNum,!colNum));

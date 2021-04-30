@@ -56,6 +56,9 @@ let
 in
 	case (b,v1,v2) of
 	(Equals,IntVal(i1),IntVal(i2))      		=> (BoolVal(i1 = i2),env)
+	| (Equals,BoolVal(i1),BoolVal(i2))      	=> (BoolVal(i1 = i2),env)
+	| (Nequals,IntVal(i1),IntVal(i2))      		=> (BoolVal(i1 <> i2),env)
+	| (Nequals,BoolVal(i1),BoolVal(i2))      	=> (BoolVal(i1 <> i2),env)
 	| (BoolOp(And),BoolVal(i1),BoolVal(i2))  	=> (BoolVal(i1 andalso i2),env)
 	| (BoolOp(Or),BoolVal(i1),BoolVal(i2))  	=> (BoolVal(i1 orelse i2),env)
 	| (BoolOp(Xor),BoolVal(i1),BoolVal(i2))  	=> (BoolVal(((not i1) andalso i2) orelse ((not i2) andalso i1)),env)

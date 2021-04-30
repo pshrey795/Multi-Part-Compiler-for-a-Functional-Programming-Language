@@ -3,7 +3,7 @@
 %name A3
 
 %term
-  ID of string | CONST of string | NUM of int | INT | BOOL | COLON | FUN | FN | DEC | ARROW | NOT | TERM | AND | OR | XOR | EQUALS | NEGATE | PLUS | MINUS | TIMES | GREATERTHAN | LESSTHAN | IMPLIES | LET | IN | END | IF | THEN | ELSE | FI | ASSN | RPAREN | LPAREN | EOF 
+  ID of string | CONST of string | NUM of int | INT | BOOL | COLON | FUN | FN | DEC | ARROW | NOT | TERM | AND | OR | XOR | EQUALS | NEQUALS | NEGATE | PLUS | MINUS | TIMES | GREATERTHAN | LESSTHAN | IMPLIES | LET | IN | END | IF | THEN | ELSE | FI | ASSN | RPAREN | LPAREN | EOF 
 
 %nonterm FILE of AST.program | PROGRAM of AST.program | EXP of AST.exp | DECL of AST.decl | FUNDECL of AST.fundecl | TYP of AST.typ | VAR of AST.exp
 
@@ -18,7 +18,7 @@
 %right ARROW
 %right DEC
 %right IMPLIES
-%left AND OR XOR EQUALS
+%left AND OR XOR EQUALS NEQUALS
 %right NOT
 %nonassoc GREATERTHAN LESSTHAN
 %left PLUS MINUS
@@ -45,6 +45,7 @@ EXP: IF EXP THEN EXP ELSE EXP FI(AST.ConditionExp(EXP1,EXP2,EXP3))
     | EXP OR EXP (AST.BinExp(AST.BoolOp(AST.Or),EXP1,EXP2))
     | EXP XOR EXP (AST.BinExp(AST.BoolOp(AST.Xor),EXP1,EXP2))
     | EXP EQUALS EXP (AST.BinExp(AST.Equals,EXP1,EXP2))
+    | EXP NEQUALS EXP (AST.BinExp(AST.Nequals,EXP1,EXP2))
     | EXP IMPLIES EXP (AST.BinExp(AST.BoolOp(AST.Implies),EXP1,EXP2))
     | EXP PLUS EXP (AST.BinExp(AST.IntOp(AST.Add),EXP1,EXP2))
     | EXP MINUS EXP (AST.BinExp(AST.IntOp(AST.Sub),EXP1,EXP2))

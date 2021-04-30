@@ -16,6 +16,7 @@ datatype binop = BoolOp of binop1
                 | IntOp of binop2
                 | RelOp of binop3
                 | Equals
+                | Nequals
 
 datatype decl = ValDecl of id * exp  
 

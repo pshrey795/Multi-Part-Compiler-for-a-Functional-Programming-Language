@@ -20,6 +20,7 @@ val TIMES:  'a * 'a -> (svalue,'a) token
 val MINUS:  'a * 'a -> (svalue,'a) token
 val PLUS:  'a * 'a -> (svalue,'a) token
 val NEGATE:  'a * 'a -> (svalue,'a) token
+val NEQUALS:  'a * 'a -> (svalue,'a) token
 val EQUALS:  'a * 'a -> (svalue,'a) token
 val XOR:  'a * 'a -> (svalue,'a) token
 val OR:  'a * 'a -> (svalue,'a) token

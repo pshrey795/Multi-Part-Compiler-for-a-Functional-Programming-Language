@@ -1,6 +1,11 @@
-fun func1 (f:int):int => (f 1) ;
-let 
-	f = fn(x:int): int=>x PLUS 1
+fun fib(n:int):int => if n EQUALS 0 then 1 else if n EQUALS 1 then 1 else (fib (n MINUS 1)) PLUS (fib (n MINUS 2)) fi fi;
+let
+	x = 4
 in
-	func1(f)
+	if x NEQUALS 3 then (fib 5) else 2 fi
+end;
+let
+	x = 3
+in
+	if x NEQUALS 3 then (fib 5) else 2 fi
 end;
