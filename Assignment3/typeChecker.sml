@@ -60,8 +60,8 @@ case e of
 				   	(t,env)
 				   end
 | AppExp(e1,e2)                 => let 
-				   	val (t1,_) = typeCheck(e1,env,expNo)
-				   	val (t2,_) = typeCheck(e2,env,expNo)
+				   	val (t1,env1) = typeCheck(e1,env,expNo)
+				   	val (t2,_) = typeCheck(e2,env1,expNo)
 				   in 
 				   	case t1 of
 					Arrow(t,v) => if t2=t then (v,env) 

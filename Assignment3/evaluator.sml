@@ -71,19 +71,36 @@ in
 end
 
 and
-evalLambdaExp(e1:exp,e2:exp,env:environment) = 
+evalLambdaExp(e1:exp,e2:exp,env:environment) =
 let
-	val (v,_) = evalExp(e2,env)
 	val (v1,updatedEnv) =
 	case e1 of
-	DeclExp(Fn(i1,_,_),e3)	=> (LambdaVal(i1,e3),env) 
-	| VarExp(i)		=> (envLookup(i,env),env)
-	| AppExp(x,y) 		=> (evalLambdaExp(x,y,env))
+	DeclExp(Fn(i1,_,_),e3)		=> (LambdaVal(i1,e3),env)
+	| DeclExp(Fun(i1,i2,_,_),e3)	=> (LambdaVal(i2,e3),envAdd(i1,LambdaVal(i2,e3),env))		
+	| VarExp(i)			=> (envLookup(i,env),env)
+	| AppExp(x,y) 			=> (evalLambdaExp(x,y,env))
+	| ConditionExp(i1,i2,i3)        => let
+						val (BoolVal(v),_) = evalExp(i1,env)
+					   in
+					   	if v then evalLambdaExp(i2,e2,env) else evalLambdaExp(i3,e2,env)
+					   end
+	val (v,_) = evalExp(e2,updatedEnv)
 in
-	case v1 of LambdaVal(i,e3) => evalExp(e3,envAdd(i,v,updatedEnv))		   
+	case v1 of LambdaVal(i,e3) => evalExp(e3,envAdd(i,v,updatedEnv))	   
+end
+
 end
 
 
-end
+
+
+
+
+
+
+
+
+
+
 	 
 

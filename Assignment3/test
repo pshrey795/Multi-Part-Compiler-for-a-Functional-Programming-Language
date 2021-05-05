@@ -1,3 +1,1 @@
-fun x (y:int):int=>y TIMES y;
-fun twice(y:int):int=> x (x y); 
-twice 2;
+let p = ((fun f(x:int):int->int => fun g(y:int):int => x PLUS y) 2) in (p 2) end

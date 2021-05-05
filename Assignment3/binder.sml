@@ -64,9 +64,9 @@ let
 	let
 		val (v,updatedEnv) = evalExp(e,env)
 	in
-		case v of
-		LambdaVal(i1,e1)    => evalList(pr,updatedEnv)
-		| _                 => v::evalList(pr,updatedEnv)
+		case v of 
+		LambdaVal(i,e) 	=> evalList(pr,updatedEnv)
+		| _		=> v::evalList(pr,updatedEnv) 
 	end
 in
 	if checkType fileName then case k of
