@@ -3,9 +3,7 @@ struct
 
 type id = string
 
-type const = string
-
-datatype typ = INT | BOOL | Arrow of typ * typ     
+datatype typ = INT | BOOL | Arrow of typ * typ | PlaceHolder     
 
 datatype binop1 = And | Or | Xor | Implies
 datatype binop2 = Add | Sub | Times
@@ -27,7 +25,7 @@ and exp = ConditionExp of exp * exp * exp
         | BinExp of binop * exp * exp		
         | UnaryExp of unop * exp
         | VarExp of id
-        | ConstExp of const 
+        | BoolExp of bool
         | LetExp of decl * exp
         | IntExp of int
         | AppExp of exp * exp 

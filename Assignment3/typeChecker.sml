@@ -17,7 +17,7 @@ fun typeEnvAdd(i:id, t: typ, env:typeEnv) = (i,t)::env
 fun typeCheck(e:exp, env:typeEnv,expNo:int) = 
 case e of 
   IntExp(i) 			=> (INT,env)
-| ConstExp(i) 			=> (BOOL,env)
+| BoolExp(i) 			=> (BOOL,env)
 | VarExp(i)			=> (typeEnvLookup(i,env),env)
 | ConditionExp(e1,e2,e3)	=> let val (t1,_) = typeCheck(e1,env,expNo)
 				   in 

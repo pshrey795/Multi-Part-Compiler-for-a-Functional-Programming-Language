@@ -1,1 +1,2 @@
-let p = ((fun f(x:int):int->int => fun g(y:int):int => x PLUS y) 2) in (p 2) end
+fun f(x:int):int => let p = (fn(x:int):int->int => fn(y:int):int => x TIMES y) 4 in (p x) end;
+f 4;

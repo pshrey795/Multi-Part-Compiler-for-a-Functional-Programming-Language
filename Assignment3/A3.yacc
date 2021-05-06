@@ -55,7 +55,7 @@ EXP: IF EXP THEN EXP ELSE EXP FI(AST.ConditionExp(EXP1,EXP2,EXP3))
     | FUNDECL DEC EXP (AST.DeclExp(FUNDECL,EXP))		
     
 VAR: ID (AST.VarExp(ID))
-     | CONST (AST.ConstExp(CONST)) 
+     | CONST (if CONST="TRUE" then AST.BoolExp(true) else AST.BoolExp(false)) 
      | NUM (AST.IntExp(NUM))
      | NEGATE VAR(AST.UnaryExp(AST.Negate,VAR))
      | NOT VAR(AST.UnaryExp(AST.Not,VAR))
