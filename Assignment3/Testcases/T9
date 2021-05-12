@@ -1,0 +1,7 @@
+fun func3 (x:int) : bool => x LESSTHAN 0;
+fun func1 (f:(int->bool)->int):int => (f func3);
+fun func2 (f: int->bool): int => 
+  if (f 3) EQUALS TRUE then 1
+  else 0;
+(func1 func2)
+
