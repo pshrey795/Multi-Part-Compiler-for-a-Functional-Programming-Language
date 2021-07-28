@@ -1,9 +1,9 @@
-###Stage 1 : Delimiter Conversion
+Stage 1 : Delimiter Conversion
 ===
 
 SML code for scanning a delimited code and converting it from given delimiter (say, a comma) to another delimiter(like a tab). Exact specification are contained in the [problem statement](https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/tree/master/DelimiterConvertor/Statement.pdf).
 
-####How to run the code:
+How to run the code:
 ---
 
 1. First clone the directory using `git clone  https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language`
