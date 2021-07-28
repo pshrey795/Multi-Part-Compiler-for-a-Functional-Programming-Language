@@ -1,6 +1,0 @@
-fun multi (x: int -> int): int -> int => fn (y: int): int => x y;
-let
-	hof = fn (z: int): int => z PLUS 1
-in
-	multi hof 2
-end

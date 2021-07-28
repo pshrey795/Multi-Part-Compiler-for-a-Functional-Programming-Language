@@ -1,6 +1,0 @@
-let x = 5 in 
-   let y= 5 in 
-      if x AND TRUE then y else y PLUS 1 fi
-   end
-end
-
