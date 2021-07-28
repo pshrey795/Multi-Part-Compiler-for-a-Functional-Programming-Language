@@ -1,0 +1,2 @@
+fun add(x:int):int->int=>fn(y:int):int=>if x EQUALS 0 then y else if x LESSTHAN 0 then add (x PLUS 1) (y MINUS 1) else add (x MINUS 1) (y PLUS 1) fi fi;
+add NEGATE 1 3

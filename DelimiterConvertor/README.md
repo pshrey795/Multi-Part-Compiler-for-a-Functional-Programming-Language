@@ -6,7 +6,7 @@ SML code for scanning a delimited code and converting it from given delimiter (s
 How to run the code:
 ---
 
-1. First clone the directory using `git clone  https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language`
+1. Clone the directory using `git clone  https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/DelimiterConvertor`
 2. The code is contained in the file _csv2dsv.sml_, navigate to the directory containing it.
 3. Open the SML interactive environment using the command `sml` in terminal.
 4. To compile the code, type `use "csv2dsv.sml"`.
