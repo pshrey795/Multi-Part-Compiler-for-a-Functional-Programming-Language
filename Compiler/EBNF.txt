@@ -1,15 +1,28 @@
 program     ::= {statement} EOF .
 statement   ::= formula TERM .
-formula     ::= IF formula THEN formula ELSE formula | Expression
-Expression  ::= Term IMPLIES Expression | Term.
+formula     ::= IF formula THEN formula ELSE formula | Expression .
+Expression  ::= Term IMPLIES Expression | Term | LET Declaration IN Expression END | Declaration .
+Declaration ::= ID ASSIGN Expression | FunDec DEC Expression .
+FunDec      ::= FN LPAREN ID COLON Type RPAREN COLON Type | FUN ID LPAREN ID COLON Type RPAREN COLON Type
 Term        ::= Term binOp Factor | Factor .
-Factor      ::= NOT Factor | LPAREN formula RPAREN | CONST | ID 
-binOp       ::= AND|OR|XOR|EQUALS .
+Factor      ::= NOT Factor | LPAREN formula RPAREN | CONST | ID | NEGATE Factor 
+binOp       ::= AND|OR|XOR|EQUALS|MINUS|PLUS|TIMES|GREATERTHAN|LESSTHAN .
 TERM        ::= ";" .
 AND         ::= "AND" .
 OR          ::= "OR" .
 XOR         ::= "XOR" .
 EQUALS      ::= "EQUALS" .
+ASSIGN      ::= "="
+MINUS       ::= "MINUS" .
+PLUS        ::= "PLUS .
+TIMES       ::= "TIMES" .
+GREATERTHAN ::= "GREATERTHAN" .
+LESSTHAN    ::= "LESSTHAN" .
+LET         ::= "LET" .
+IN          ::= "IN" .
+END         ::= "END" .
+FUN         ::= "FUN" .
+FN          ::= "FN" .
 CONST       ::= "TRUE"|"FALSE" .
 NOT         ::= "NOT" .
 IMPLIES     ::= "IMPLIES" .
@@ -18,12 +31,20 @@ THEN        ::= "THEN" .
 ELSE        ::= "ELSE" .
 LPAREN      ::= "(" .
 RPAREN      ::= ")" .
+COLON       ::= ":" .
+DEC         ::= "=>" .
 ID          ::= Character{Character} .
 Character   ::= "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | 
                 "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | 
                 "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | 
                 "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | 
                 "w" | "x" | "y" | "z" .
+
+
+Type        ::= INT | BOOL | Type ARROW Type | LPAREN Type RPAREN | LPAREN Type RPAREN ARROW Type .
+INT         ::= "int"
+BOOL        ::= "bool"
+ARROW       ::= "->"
 
 
 Note that in the above production rules, the tokens are shown as terminals without quotes
