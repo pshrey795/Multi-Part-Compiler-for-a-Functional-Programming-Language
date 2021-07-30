@@ -1,3 +1,0 @@
-fun recfun (x: int): int => if x GREATERTHAN 0 then x TIMES (recfun (x MINUS 1)) else 1 fi;
-recfun 5;
-

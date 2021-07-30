@@ -1,7 +1,0 @@
-fun fib (n: int): int => if n EQUALS 0 then 0 else if n EQUALS 1 then 1 else fib (n MINUS 1) PLUS fib (n MINUS 2) fi fi;
-fib 1;
-fib 2;
-fib 3;
-fib 4;
-fib 5;
-fib 20

@@ -1,0 +1,3 @@
+fun P (a: int): int -> int -> int -> int => fn (b: int): int -> int -> int => fn (c: int): int -> int => fn (x: int): int => a TIMES x TIMES x PLUS b TIMES x PLUS c;
+fun p (x: int): int => P 1 2 3 x;
+p 5

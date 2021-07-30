@@ -1,0 +1,12 @@
+CM.make("$/basis.cm");
+CM.make("$/ml-yacc-lib.cm");
+use "AST.sml";
+use "typeChecker.sml";
+use "evaluator.sml";
+use "Comp.yacc.sig";
+use "Comp.yacc.sml";
+use "Comp.lex.sml";
+use "binder.sml";
+Control.Print.printLength := 1000; 
+Control.Print.printDepth := 1000; 
+Control.Print.stringDepth := 1000; 

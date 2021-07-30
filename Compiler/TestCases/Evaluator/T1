@@ -1,5 +1,0 @@
-3 MINUS 2 PLUS 3 TIMES 2;
-let X = 1 in
-    if X EQUALS 2 then 3 else 4 fi
-end
-

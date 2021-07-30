@@ -1,7 +1,0 @@
-fun func1 (f:int->int):int => (f 1) ;
-let
-    f = fn(x:int): bool=>x LESSTHAN 5
-in
-    (func1 f)
-end
-
