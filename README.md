@@ -1,7 +1,7 @@
 Fully Functional Multi-Stage Compiler
 ===
 
-Compiler for a functional programming language (subset of SML). The exact problem statements can be found in either [Statement1](https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/Compiler/ProblemStatement/Statement1.pdf) or [Statement2](https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/Compiler/ProblemStatement/Statement2.pdf) . The language has been created from a context-free grammar specification in [**Extended Backus Naur Form(EBNF)**](https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/tree/master/Compiler/EBNF.txt). This file also contains the specification of the type grammar for type checking. The compiler has been created in the following different parts:
+Compiler for a functional programming language (subset of SML). The exact problem statements can be found in either [Statement1](https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/ProblemStatement/Statement1.pdf) or [Statement2](https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/ProblemStatement/Statement2.pdf) . The language has been created from a context-free grammar specification in [**Extended Backus Naur Form(EBNF)**](https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/tree/master/EBNF.txt). This file also contains the specification of the type grammar for type checking. The compiler has been created in the following different parts:
 
 1. Lexer/Scanner using ML-Lex
 2. Parser using ML-Yacc
@@ -13,7 +13,7 @@ Compiler for a functional programming language (subset of SML). The exact proble
 How to run the files:
 ---
 
-* Clone the directory using `git clone  https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/Compiler`
+* Clone the directory using `git clone  https://github.com/pshrey795/Multi-Part-Compiler-for-a-Functional-Programming-Language/`
 * Run the `make` command in the terminal, which compiles all the files, runs the loader which loads all the pre-requisite routines, runs the binder which joins all the files and finally opens the SML interactive environment. 
 
 1. **Lexer:**
